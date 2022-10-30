@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Слово в число</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+html, body {
+	padding:0;
+	margin:0;
+}
+#program {
+	height: auto;
+	width: 90%;
+	margin: 50px 5%;
+}
+#word {
+	height: 20px;
+	width: 97%;
+	padding: 10px 1%;
+	font-family: Bahnschrift;
+	font-size: 20px;
+}
+.breack {
+	height: 50px;
+	width: 100%;
+}
+#check-word {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-family: Bahnschrift;
+	font-size: 20px;
+	color: red;
+}
+#error-word {
+	display: none;
+}
+#matrix {
+	display: flex;
+	height: 50px;
+	width: 100%;
+}
+#note {
+	font-family: Bahnschrift;
+	font-size: 20px;
+	height: 20px;
+	width: 70px;
+	padding-top: 12px;
+}
+.set {
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	height: 50px;
+	width: 50px;
+	margin-left: 10px;
+	border-radius: 5px;
+}
+.set span {
+	margin: auto;
+	font-family: Bahnschrift;
+	font-size: 20px;
+	color: white;
+}
+#set9 {
+	background-color: grey;
+}
+#set12 {
+	background-color: grey;
+}
+#set13 {
+	background-color: grey;
+}
+#check-matrix {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-family: Bahnschrift;
+	font-size: 20px;
+	color: red;
+}
+#error-matrix {
+	display: none;
+}
+#setting {
+	display: flex;
+	height: 50px;
+	width: 100%;
+}
+#point {
+	font-family: Bahnschrift;
+	font-size: 20px;
+	height: 20px;
+	width: 70px;
+	padding-top: 12px;
+}
+input#number {
+	height: 20px;
+	width: 50px;
+	padding: 10px;
+	margin-top: 3px;
+	font-family: Bahnschrift;
+	font-size: 20px;
+}
+#apply {
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	height: 50px;
+	width: 150px;
+	margin-left: 10px;
+	background-color: grey;
+	border-radius: 5px;
+}
+#apply span {
+	margin: auto;
+	font-family: Bahnschrift;
+	font-size: 20px;
+	color: white;
+}
+#check-number {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-family: Bahnschrift;
+	font-size: 20px;
+}
+#error-number {
+	display: none;
+	color: red;
+}
+#level-number {
+	display: none;
+	color: green;
+}
+#button {
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	height: 50px;
+	width: 250px;
+	background-color: green;
+	border-radius: 10px;
+}
+#link {
+	margin: auto;
+	font-family: Bahnschrift;
+	font-size: 20px;
+	color: white;
+}
+#result {
+	padding-top: 20px;
+	font-family: Bahnschrift;
+	font-size: 20px;
+	color: green;
+}
+#fibonacci {
+	display: none;
+}
+</style>
+</head>
+<body>
+<div id="program">
+	<input type="text" id="word">
+	<div class="breack" id="check-word">
+		<span id="error-word">Допускается только кириллица или латиница (без пробелов)</span>
+	</div>
+	<div id="matrix">
+		<div id="note"><span>Набор:</span></div>
+		<div class="set" id="set9" onClick="numeralSystem(9);"><span>9</span></div>
+		<div class="set" id="set12" onClick="numeralSystem(12);"><span>12</span></div>
+		<div class="set" id="set13" onClick="numeralSystem(13);"><span>13</span></div>
+	</div>
+	<div class="breack" id="check-matrix">
+		<span id="error-matrix">Выберите систему счисления</span>
+	</div>
+	<div id="setting">
+		<div id="point"><span>Число:</span></div>
+		<input type="text" id="number">
+		<div id="apply" onClick="checkNumber();">
+			<span>Применить</span>
+		</div>
+	</div>
+	<div class="breack" id="check-number">
+		<span id="error-number">Допускаются только цифры</span>
+		<span id="level-number"></span>
+	</div>
+	<div id="button" onClick="checkWord();">
+		<span id="link">Посчитать</span>
+	</div>
+	<div class="breack" id="result">
+		<span id="fibonacci"></span>
+	</div>
+<div>
+<script>
+var cyrillic = ["а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"];
+var latin = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+var numSys;
+function numeralSystem(x) {
+	numSys = x;
+	var setnine;
+	var settwelve;
+	var setthirteen;
+	switch(numSys) {
+		case 9: 
+			setnine = "green";
+			settwelve = "grey";
+			setthirteen = "grey";
+			break;
+		case 12: 
+			setnine = "grey";
+			settwelve = "green";
+			setthirteen = "grey";
+			break;
+		case 13: 
+			setnine = "grey";
+			settwelve = "grey";
+			setthirteen = "green";
+			break;
+		default: alert("Error");
+	}
+	document.getElementById("set9").style.backgroundColor = setnine;
+	document.getElementById("set12").style.backgroundColor = settwelve;
+	document.getElementById("set13").style.backgroundColor = setthirteen;
+	document.getElementById("fibonacci").style.display = "none";
+	document.getElementById("fibonacci").innerHTML = '';
+}
+var controlNumber = true;
+var level = 1;
+function checkNumber() {
+	var number = document.getElementById("number");
+	var checking = number.value;
+	for (i = 0; i<checking.length; i++) {
+		if (/[0-9]/.test(checking[i])) {
+			controlNumber = true;
+			continue;
+		}
+		else {
+			controlNumber = false;
+			break;
+		}
+	}
+	var errorNumber;
+	var levelNumber;
+	var phraseNumber;
+	if(controlNumber) {
+		errorNumber = "none";
+		levelNumber = "inline-block";
+		phraseNumber = 'Уровень: ' + checking;
+	}
+	else {
+		errorNumber = "inline-block";
+		levelNumber = "none";
+		phraseNumber = '';
+	}
+	document.getElementById("error-number").style.display = errorNumber;
+	document.getElementById("level-number").style.display = levelNumber;
+	document.getElementById("level-number").innerHTML = phraseNumber;
+	document.getElementById("fibonacci").style.display = "none";
+	document.getElementById("fibonacci").innerHTML = '';
+	level = Number.parseInt(checking);
+}
+var controlWord = true;
+function checkWord() {
+	var word = document.getElementById("word");
+	var checked = word.value;
+	for (i = 0; i<checked.length; i++) {
+		if (/[a-zA-Zа-яА-ЯёЁ]/.test(checked[i])) {
+			controlWord = true;
+			continue;
+		}
+		else {
+			controlWord = false;
+			break;
+		}
+	}
+	var errorWord;
+	if(controlWord) {
+		errorWord = "none";
+	}
+	else {
+		errorWord = "inline-block";
+	}
+	document.getElementById("error-word").style.display = errorWord;
+	document.getElementById("fibonacci").style.display = "none";
+	document.getElementById("fibonacci").innerHTML = '';
+	controlCheck();
+}
+function controlCheck() {
+	var words = document.getElementById("word");
+	var variable = words.value.toLowerCase();
+	if(level && variable && controlNumber && controlWord) {
+		var errorMatrix;
+		if (numSys) {
+			errorMatrix = "none";
+			var transformarr = numberSystem(numSys);			
+			var working = [];
+			for (y = 0; y<variable.length; y++) {
+				var k = variable[y];
+				working[y] = transformarr[k];
+			}
+			manipulator(working, level, numSys);
+		}
+		else {
+			errorMatrix = "inline-block";
+		}
+		document.getElementById("error-matrix").style.display = errorMatrix;
+	}
+}
+var alphabet = {};
+function numberSystem(x) {
+	num = Number.parseInt(x);
+	var arrcyr = {};
+	for(k = 0, i = 1; k<cyrillic.length; k++, i++) {
+		if(i>num)i=1;
+		var q = cyrillic[k];
+		arrcyr[q] = i;
+	}
+	var arrlat = {};
+	for(k = 0, i = 1; k<latin.length; k++, i++) {
+		if(i>num)i=1;
+		var q = latin[k];
+		arrlat[q] = i;
+	}
+	for (key in arrcyr) {
+		alphabet[key] = arrcyr[key];
+	}
+	for (key in arrlat) {
+		alphabet[key] = arrlat[key];
+	}
+	return alphabet;
+}
+function manipulator(array, limit, sysNum) {
+	var result = array;
+	for(x = array.length; x>limit; x--) {
+		result = fibonacci(result, sysNum);
+	}
+	var output = result.join(", ");
+	document.getElementById("fibonacci").style.display = "inline-block";
+	document.getElementById("fibonacci").innerHTML = 'Результат: ' + output;
+}
+function fibonacci(arrays, plan) {
+	var arr = [];
+	var c = 0;
+	var elem = arrays.length - 1;
+	for (z = elem; z>0; z--) {
+		arr[c] = arrays[c] + arrays[c+1];
+		c++;
+	}
+	var res = reduction(arr, plan);
+	return res;
+}
+function reduction(array, sysNum){
+	for(f = 0; f<array.length; f++) {
+		for(n = array[f]; n > sysNum; ) {
+			n = n - sysNum;
+			array[f] = n;
+		}
+	}
+	return array;
+}
+</script>
+</body>
+</html>
