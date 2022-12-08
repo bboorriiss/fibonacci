@@ -197,6 +197,15 @@ input#number {
 	</div>
 <div>
 <script>
+	// если заверну все это в модуль, то не смогу вызывать функции из html-кода
+	
+	//let identifier = document.querySelector('#identifier');
+	//identifier.addEventListener('click', function() {
+		// код
+		// func(); // вызов функции
+	//});
+//;(function() {
+
 var cyrillic = ["а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"];
 var latin = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 var numSys;
@@ -268,6 +277,7 @@ var controlWord = true;
 function checkWord() {
 	var word = document.getElementById("word");
 	var checked = word.value;
+	checked = checked.replaceAll(" ", "");
 	for (i = 0; i<checked.length; i++) {
 		if (/[a-zA-Zа-яА-ЯёЁ]/.test(checked[i])) {
 			controlWord = true;
@@ -292,7 +302,8 @@ function checkWord() {
 }
 function controlCheck() {
 	var words = document.getElementById("word");
-	var variable = words.value.toLowerCase();
+	var string = words.value.replaceAll(" ", "");
+	var variable = string.toLowerCase();
 	if(level && variable && controlNumber && controlWord) {
 		var errorMatrix;
 		if (numSys) {
@@ -363,6 +374,8 @@ function reduction(array, sysNum){
 	}
 	return array;
 }
+
+//})();
 </script>
 </body>
 </html>
